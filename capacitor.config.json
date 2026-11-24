@@ -1,0 +1,8 @@
+{
+  "appId": "app.noor.quran",
+  "appName": "NOOR",
+  "webDir": "www",
+  "backgroundColor": "#F3EEE3",
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "always" }
+}

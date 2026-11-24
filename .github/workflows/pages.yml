@@ -1,0 +1,29 @@
+name: Site web (confidentialité, assistance, version web)
+# Publie gratuitement sur GitHub Pages : la page d'accueil, la politique de confidentialité, l'assistance
+# et la version web de NOOR (dans /app/). Activez d'abord Settings › Pages › Source : GitHub Actions.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: { group: pages, cancel-in-progress: true }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: "${{ steps.d.outputs.page_url }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/verify-quran.mjs
+      - name: Assembler le site
+        run: |
+          mkdir -p _site && cp -r site/. _site/ && mkdir -p _site/app && cp -r www/. _site/app/
+          rm -f _site/app/_shots.html _site/app/icon-square.svg _site/app/splash-tmp.svg
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+      - id: d
+        uses: actions/deploy-pages@v4

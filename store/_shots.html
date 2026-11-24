@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- Page temporaire : compose les visuels des stores (captures avec titre, bannière). Supprimée après génération. -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root{--emerald:#1E4A3F;--gold:#C9A86A;--ivory:#F3EEE3;--ink:#1f2b27}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{background:radial-gradient(ellipse 80% 45% at 50% 0%,rgba(201,168,106,.35),transparent 70%),var(--ivory);font-family:"Manrope",sans-serif;color:var(--ink)}
+  body.dark{background:radial-gradient(ellipse 80% 45% at 50% 0%,rgba(201,168,106,.22),transparent 70%),#16241f;color:#f1ede3}
+  .girih{position:absolute;inset:0;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23C5A46D' stroke-opacity='.22' stroke-width='.7'%3E%3Crect x='14' y='14' width='20' height='20'/%3E%3Crect x='14' y='14' width='20' height='20' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E")}
+  .cap{position:relative;text-align:center;padding:0 28px}
+  .cap h1{font:600 var(--h)/1.08 "Cormorant Garamond",Georgia,serif;margin:0;text-wrap:balance}
+  .cap p{margin:.4em 0 0;font-size:var(--p);opacity:.7}
+  .rtl .cap h1{font-family:"Amiri",serif;font-weight:700}
+  .rtl .cap p{font-family:"IBM Plex Sans Arabic",sans-serif}
+  .phone{position:absolute;left:50%;transform-origin:top center;border-radius:46px;background:#0d1512;padding:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.06)}
+  .phone iframe{display:block;width:390px;height:844px;border:0;border-radius:37px;background:#fff}
+  /* bannière Google Play 1024×500 */
+  .feat{position:absolute;inset:0;display:flex;align-items:center;gap:36px;padding:0 70px;background:linear-gradient(120deg,#1E4A3F,#10261f);color:#F3EEE3;overflow:hidden}
+  .feat svg{width:170px;height:170px;flex:none;color:var(--gold);filter:drop-shadow(0 0 30px rgba(201,168,106,.45))}
+  .feat .t{font:600 74px/1 "Cormorant Garamond",serif;letter-spacing:.32em}
+  .feat .a{font:700 60px/1.6 "Amiri",serif;color:var(--gold);margin-top:14px}
+  .feat .s{font-size:24px;opacity:.85;margin-top:10px}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="emblem" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M28 88V52C28 33 38 22 50 12C62 22 72 33 72 52V88" stroke-width="3"/><path d="M38 88V56C38 44 43 37 50 31C57 37 62 44 62 56V88" stroke-width="1.4" stroke-opacity=".55"/><g transform="translate(50 52)" fill="currentColor" stroke="none"><rect x="-7" y="-7" width="14" height="14"/><rect x="-7" y="-7" width="14" height="14" transform="rotate(45)"/></g><circle cx="50" cy="52" r="3" fill="#1E4A3F" stroke="none"/><path d="M50 66V82M44 70l-3 10M56 70l3 10" stroke-width="1.2" stroke-opacity=".5"/></symbol></svg>
+<div class="girih"></div>
+<script>
+const q = new URLSearchParams(location.search), mode = q.get("mode") || "shot";
+const W = innerWidth, H = innerHeight;
+if (mode === "feature") {
+  document.body.insertAdjacentHTML("beforeend", `<div class="feat"><div class="girih"></div><svg><use href="#emblem"/></svg><div style="position:relative"><div class="t">NOOR</div><div class="a">نُور</div><div class="s">${q.get("sub") || ""}</div></div></div>`);
+} else {
+  const lang = q.get("lang") || "fr", rtl = lang === "ar";
+  if (rtl) document.body.classList.add("rtl");
+  if (q.get("bg") === "dark") document.body.classList.add("dark");
+  const capH = Math.round(H * 0.2);
+  document.body.insertAdjacentHTML("beforeend", `<div class="cap" dir="${rtl ? "rtl" : "ltr"}" style="padding-top:${Math.round(H * 0.045)}px;--h:${Math.round(W * 0.085)}px;--p:${Math.round(W * 0.036)}px"><h1>${q.get("t") || ""}</h1><p>${q.get("s") || ""}</p></div>`);
+  const scale = Math.min((W * 0.86) / 410, (H - capH - 10) / 864);
+  const ph = document.createElement("div"); ph.className = "phone";
+  ph.style.top = capH + "px"; ph.style.transform = `translateX(-50%) scale(${scale})`;
+  const fr = document.createElement("iframe");
+  fr.src = `index.html?demo=1&lang=${lang}&theme=${q.get("theme") || "light"}&taj=${q.get("taj") || 0}#${q.get("view") || "home"}`;
+  ph.appendChild(fr); document.body.appendChild(ph);
+  // scénario facultatif exécuté dans l'application (même origine)
+  fr.addEventListener("load", () => setTimeout(() => {
+    const w = fr.contentWindow, act = q.get("act");
+    try {
+      if (act === "reader") { w.openSurah(+q.get("s1") || 36, +q.get("a1") || 0) }
+      if (act === "recite") { w.Recite.open(1, 5); setTimeout(() => { const R = w.Recite._state; R.listening = false; R.said = "اياك نعبد واياك نستغفر"; w.Recite._judge(true) }, 300) }
+      if (act === "discover") { w.route("discover"); setTimeout(() => w.document.querySelector('[data-ref="3:45"]')?.click(), 400) }
+      if (act === "kids") { w.route("kids") }
+      if (act === "tajweed") { w.route("tajweed") }
+      if (act === "prayer") { w.route("more"); w.setMoreTab("prayer") }
+      if (act === "scrolltop") w.scrollTo(0, 0);
+    } catch (e) { console.log(e) }
+  }, 1200));
+}
+</script>
+</body></html>

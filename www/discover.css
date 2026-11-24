@@ -1,0 +1,49 @@
+/* NOOR — « Découvrir le Coran », IA conditionnelle et petites finitions */
+
+/* L'IA n'apparaît que si un serveur est configuré */
+body.no-ai .needs-ai{display:none!important}
+body.no-ai .composer{display:none}
+.ai-setup{display:flex;flex-direction:column;gap:6px;align-items:flex-start;margin-bottom:12px;border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}
+.ai-setup b{font:600 1.2rem var(--f-display)}
+[dir="rtl"] .ai-setup b{font-family:var(--f-naskh)}
+.ai-setup p{margin:0;color:var(--muted);font-size:.9rem}
+
+/* En-têtes : une ligne chacun, coupée proprement si trop longue */
+.rtitle b,.rtitle small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Accueil */
+html:not([dir="rtl"]) .salam{text-align:left}
+.discover-card{display:flex;align-items:center;gap:14px;padding:14px 16px;background:linear-gradient(120deg,var(--gold-soft),transparent 70%),var(--surface);border-color:color-mix(in srgb,var(--gold) 40%,var(--line))}
+.discover-card>*:not(.girih){position:relative}
+.discover-card b{display:block;font:600 1.2rem/1.2 var(--f-display)}
+[dir="rtl"] .discover-card b{font-family:var(--f-naskh)}
+.discover-card span>span{font-size:.8rem;color:var(--muted)}
+.dc-ic{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--gold);color:var(--emerald);font-size:1.2rem}
+.dc-go{margin-inline-start:auto;color:var(--gold-ink);flex:none}
+[dir="rtl"] .dc-go svg{transform:scaleX(-1)}
+.more-btn{margin-top:8px}
+.btn-ghost{width:100%;padding:13px;border-radius:999px;margin-top:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;text-align:center}
+.discover-l{border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}
+.discover-l .lc-ic{font-size:1.6rem;color:var(--emerald);background:var(--gold)}
+
+/* Écran Découvrir */
+.disc-intro{display:flex;flex-direction:column;gap:2px}
+.disc-intro>*:not(.girih){position:relative}
+.disc-intro p{margin:.35em 0;font-size:.95rem;line-height:1.65}
+.disc-start{display:flex;flex-direction:column;gap:8px}
+.ds{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:12px 14px}
+.ds-txt b{display:block;font-size:.95rem}
+.ds-txt span{font-size:.8rem;color:var(--muted)}
+.ds-ar{font-family:var(--f-naskh);font-size:1.3rem;color:var(--accent)}
+.disc-topics{display:flex;flex-wrap:wrap;gap:8px}
+.chip-topic{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:.86rem;font-weight:500}
+.chip-topic.on{border-color:var(--gold);background:var(--gold-soft)}
+.chip-topic .ref{font-size:.72rem}
+.gloss{display:flex;flex-direction:column;padding:6px 16px}
+.gl{display:flex;flex-direction:column;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl:last-child{border-bottom:0}
+.gl b{font-weight:700;color:var(--accent)}
+.gl span{font-size:.88rem;color:var(--muted)}
+.disc-ask b{font:600 1.2rem var(--f-display)}
+[dir="rtl"] .disc-ask b,[dir="rtl"] .ds-txt b{font-family:var(--f-naskh)}
+.disc-ask p{margin:4px 0 0}

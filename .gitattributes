@@ -1,0 +1,8 @@
+# Fins de ligne fixes (LF) : les scripts s'exécutent sur Linux/macOS dans GitHub Actions.
+* text=auto eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+# Données du Coran : jamais transformées par Git (l'intégrité est vérifiée octet par octet).
+www/data/*.json -text
+*.png binary
+*.woff2 binary

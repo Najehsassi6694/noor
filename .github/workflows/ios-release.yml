@@ -1,0 +1,56 @@
+name: iOS — version App Store (envoi sur TestFlight)
+# Compile NOOR avec Xcode 26 (SDK iOS 26, exigé par Apple depuis le 28 avril 2026) et l'envoie sur App Store Connect.
+# Secrets requis (voir PUBLIER.md) :
+#   APPLE_TEAM_ID       identifiant d'équipe (10 caractères)
+#   ASC_KEY_ID          identifiant de la clé API App Store Connect (rôle « Admin »)
+#   ASC_ISSUER_ID       identifiant de l'émetteur de la clé
+#   ASC_KEY_P8_BASE64   contenu du fichier AuthKey_XXXX.p8, encodé en base64
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+jobs:
+  ios:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - name: Vérifier l'intégrité du texte coranique
+        run: npm run verify
+      - name: Choisir Xcode 26
+        run: |
+          X=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          sudo xcode-select -s "$X/Contents/Developer"; xcodebuild -version
+      - name: Préparer le projet iOS
+        run: bash scripts/prepare-ios.sh ${{ github.run_number }}
+      - name: Clé API App Store Connect
+        env:
+          KEY: ${{ secrets.ASC_KEY_P8_BASE64 }}
+        run: |
+          test -n "$KEY" || { echo "Secrets Apple manquants (voir PUBLIER.md)"; exit 1; }
+          mkdir -p ~/asc && echo "$KEY" | base64 --decode > ~/asc/AuthKey.p8
+      - name: Archiver (signature automatique)
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/NOOR.xcarchive archive \
+            DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }} CODE_SIGN_STYLE=Automatic PRODUCT_BUNDLE_IDENTIFIER=app.noor.quran \
+            -allowProvisioningUpdates -authenticationKeyPath ~/asc/AuthKey.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }}
+      - name: Exporter et envoyer sur App Store Connect
+        run: |
+          cat > build/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>${{ secrets.APPLE_TEAM_ID }}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath build/NOOR.xcarchive -exportOptionsPlist build/ExportOptions.plist -exportPath build/export \
+            -allowProvisioningUpdates -authenticationKeyPath ~/asc/AuthKey.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }}

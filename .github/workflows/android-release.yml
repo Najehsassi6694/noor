@@ -1,0 +1,47 @@
+name: Android — version Google Play (AAB signé)
+# Lancement : onglet Actions → « Run workflow », ou en poussant une étiquette v1.0.0, v1.0.1…
+# Secrets requis : ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD
+# Secret facultatif : PLAY_SERVICE_ACCOUNT_JSON (envoi automatique vers le test interne de Google Play)
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      HAS_PLAY_KEY: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - run: npm ci
+      - name: Vérifier l'intégrité du texte coranique
+        run: npm run verify
+      - name: Vérifier la présence de la clé
+        run: test -n "$ANDROID_KEYSTORE_BASE64" || { echo "Secret ANDROID_KEYSTORE_BASE64 manquant (voir PUBLIER.md)"; exit 1; }
+      - name: Préparer le projet Android signé
+        run: bash scripts/prepare-android.sh $((1000 + ${{ github.run_number }}))
+      - name: Compiler l'AAB (Google Play) et l'APK signé
+        working-directory: android
+        run: ./gradlew bundleRelease assembleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NOOR-google-play
+          path: |
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/release/app-release.apk
+      - name: Envoyer vers Google Play (test interne)
+        if: env.HAS_PLAY_KEY == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: app.noor.quran
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: draft
+          whatsNewDirectory: fastlane/metadata/android/fr-FR/changelogs

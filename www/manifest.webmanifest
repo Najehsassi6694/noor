@@ -1,0 +1,17 @@
+{
+  "name": "NOOR — Le Coran",
+  "short_name": "NOOR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F3EEE3",
+  "theme_color": "#1E4A3F",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
