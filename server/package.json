@@ -4,7 +4,14 @@
   "private": true,
   "description": "Serveur IA de NOOR : garde la clé API côté serveur et impose les règles de fidélité au Coran.",
   "main": "index.js",
-  "scripts": { "start": "node index.js" },
-  "engines": { "node": ">=18" },
-  "dependencies": { "@anthropic-ai/sdk": "latest" }
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest"
+  },
+  "license": "GPL-3.0-or-later"
 }

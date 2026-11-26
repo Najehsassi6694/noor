@@ -3,6 +3,8 @@
 "use strict";
 const I18N = {
 fr: {
+  "set.license_t": "Logiciel libre :",
+  "set.license": "NOOR est publié sous licence GNU GPL v3. Code source :",
   "quran.tab_pages": "Pages",
   "reader.pages": "Pages",
   "page.page": "Page {n}",
@@ -198,6 +200,8 @@ fr: {
   "lesson.silent.t": "Lettres non prononcées", "lesson.silent.b": "<b>Hamzat al-waṣl</b> (ٱ) ne se prononce pas quand on enchaîne avec le mot précédent. Le <b>lām</b> de l'article est assimilé devant les quatorze lettres « solaires ». Certaines lettres écrites dans le Mushaf ne se prononcent pas."
 },
 en: {
+  "set.license_t": "Free software:",
+  "set.license": "NOOR is released under the GNU GPL v3 licence. Source code:",
   "quran.tab_pages": "Pages",
   "reader.pages": "Pages",
   "page.page": "Page {n}",
@@ -393,6 +397,8 @@ en: {
   "lesson.silent.t": "Letters not pronounced", "lesson.silent.b": "<b>Hamzat al-wasl</b> (ٱ) is not pronounced when joining from the previous word. The <b>lam</b> of the article merges into the fourteen “sun” letters. Some letters written in the Mushaf are not pronounced."
 },
 ar: {
+  "set.license_t": "برنامج حر:",
+  "set.license": "يُنشر «نور» بترخيص GNU GPL الإصدار الثالث. الشيفرة المصدرية:",
   "quran.tab_pages": "الصفحات",
   "reader.pages": "الصفحات",
   "page.page": "صفحة {n}",

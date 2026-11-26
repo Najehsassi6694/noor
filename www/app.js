@@ -186,7 +186,7 @@ function renderSrcInfo() {
   el.textContent = ok === null ? t("set.verify_fail") : ok ? t("set.verify_ok") : t("set.verify_bad", { n: OKS.filter(x => !x).length });
   el.style.color = ok ? "var(--accent)" : "#c0392b";
   const e = MAN.edition, trs = (MAN.translations || [MAN.translation]).map(x => `${x.author} (${x.language})`).join(", ");
-  $("#srcInfo").innerHTML = t("set.src", { script: esc(e.script), riwaya: esc(e.riwaya), num: esc(e.numbering), prov: esc(e.provider), date: esc(e.retrieved), tr: esc(trs), rev: MAN.reviewer ? esc(MAN.reviewer) : t("set.reviewer_none") });
+  $("#srcInfo").innerHTML = t("set.src", { script: esc(e.script), riwaya: esc(e.riwaya), num: esc(e.numbering), prov: esc(e.provider), date: esc(e.retrieved), tr: esc(trs), rev: MAN.reviewer ? esc(MAN.reviewer) : t("set.reviewer_none") }) + `<br><b>${t("set.license_t")}</b> ${t("set.license")} <a href="https://github.com/Najehsassi6694/noor" target="_blank" rel="noopener" dir="ltr">github.com/Najehsassi6694/noor</a>`;
 }
 
 /* ================= Tajweed : couleurs posées sur le texte vérifié ================= */

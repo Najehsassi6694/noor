@@ -21,5 +21,6 @@
     "@capacitor/share": "^8.0.3",
     "adhan": "^4.4.3",
     "http-server": "^14.1.1"
-  }
+  },
+  "license": "GPL-3.0-or-later"
 }

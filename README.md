@@ -114,3 +114,14 @@ assets/         icône et écran de démarrage
 ```
 
 Sources : texte arabe et traduction via api.quran.com ; audio via verses.quran.com ; horaires calculés localement avec la bibliothèque adhan.
+
+## Licence et sources
+
+NOOR est un logiciel libre, distribué sous **licence GNU GPL version 3 ou ultérieure** (fichier `LICENSE`). Vous pouvez l’utiliser, l’étudier, le modifier et le redistribuer, à condition de garder la même licence.
+
+- Texte coranique (Mushaf Uthmani, Ḥafṣ ʿan ʿĀṣim) : Quran.com / Tanzil, reproduit sans modification.
+- Traductions : Muhammad Hamidullah (français), Saheeh International (anglais), via Quran.com.
+- Mise en page des pages et annotations tajweed : Quran.com (positions et couleurs seulement, posées sur le texte vérifié).
+- Racines et lemmes : Quranic Arabic Corpus (corpus.quran.com, Kais Dukes), licence GNU GPL.
+- Récitations : verses.quran.com et quranicaudio.com ; tafsir : Quran.com.
+- Horaires de prière : bibliothèque adhan (licence MIT). Polices : Google Fonts (licence SIL OFL).
