@@ -18,6 +18,17 @@ Une seule base de code (Capacitor) qui produit l'app Android, l'app iOS et une v
 | Progrès | Objectif quotidien, série de jours, graphique 7 jours, avancement du khatm |
 | Extras | Verset du jour, 26 invocations « Rabbanā » du Coran, favoris, partage, copie |
 
+## Nouveautés (version complète)
+
+- **Mushaf par pages** : les 604 pages du Mushaf de Médine, ligne par ligne (15 lignes), avec juz, hizb et numéros de page ; glisser pour tourner. Positions des mots d’après Quran.com, contrôlées mot à mot (`scripts/build-pages.mjs`) ; le texte reste celui du Mushaf vérifié.
+- **Plan de khatm** : finir le Coran en 7 à 90 jours, avec les pages du jour, le retard éventuel et une carte sur l’accueil.
+- **Révision** : questions « verset suivant » et « fin du verset », répétition espacée (boîtes de Leitner).
+- **Vocabulaire** : les 100 racines les plus fréquentes (sur 1 651), leur sens en 3 langues, leurs lemmes et des exemples surlignés dans les versets, avec des fiches de révision. Données : Quranic Arabic Corpus (licence GNU GPL, `scripts/build-roots.mjs`).
+- **Favoris classés** (réflexion, à mémoriser, invocation, autre) avec notes personnelles.
+- **Hors ligne** : télécharger la récitation d’une sourate ; tout tafsir consulté reste disponible sans connexion, ou se télécharge pour une sourate entière.
+- **Sauvegarde et transfert** : un code à copier pour retrouver sa progression sur un autre téléphone.
+- **Serveur IA** : déploiement en un clic avec `render.yaml` (voir PUBLIER.md).
+
 ## Pour tout le monde
 
 - **Découvrir le Coran** (accueil, onglet Apprendre, et choix proposé au premier lancement) : une présentation factuelle et neutre pour les non-musulmans et les débutants. On y trouve 7 sourates par où commencer, 8 thèmes souvent recherchés qui renvoient vers de vrais versets (Jésus et Marie, « pas de contrainte en religion », etc.) et un petit lexique.

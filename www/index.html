@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="learn.css">
 <link rel="stylesheet" href="recite.css">
 <link rel="stylesheet" href="discover.css">
+<link rel="stylesheet" href="features.css">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
@@ -60,6 +61,7 @@
         <span class="cont-row"><span class="cont-ar" id="contAr" lang="ar"></span><span class="play-dot" id="contPlay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
       </button>
       <button class="card discover-card" data-go="discover"><span class="girih"></span><span class="dc-ic" aria-hidden="true">✦</span><span><b data-i18n="disc.card_t"></b><span data-i18n="disc.card_d"></span></span><span class="dc-go flip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span></button>
+      <button class="card khatm-card" id="khatmCard" hidden></button>
       <div class="rings">
         <div class="card ring-card"><div class="ring" id="ringWird"><span id="ringWirdTxt">0</span></div><div><b data-i18n="home.wird"></b><span id="goalTxt"></span></div></div>
         <div class="card ring-card"><div class="ring" id="ringKhatm"><span id="ringKhatmTxt">0%</span></div><div><b data-i18n="home.khatm"></b><span id="khatmSmall"></span></div></div>
@@ -98,7 +100,7 @@
       <h1><span data-i18n="quran.title"></span></h1>
       <p class="sub" data-i18n="quran.sub"></p>
       <div class="search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="qSearch" data-i18n-ph="quran.search_ph" autocomplete="off"></div>
-      <div class="seg" role="tablist"><button data-t="surahs" aria-selected="true" data-i18n="quran.tab_surahs"></button><button data-t="juz" aria-selected="false" data-i18n="quran.tab_juz"></button><button data-t="bookmarks" aria-selected="false" data-i18n="quran.tab_fav"></button></div>
+      <div class="seg" role="tablist"><button data-t="surahs" aria-selected="true" data-i18n="quran.tab_surahs"></button><button data-t="juz" aria-selected="false" data-i18n="quran.tab_juz"></button><button data-t="pages" aria-selected="false" data-i18n="quran.tab_pages"></button><button data-t="bookmarks" aria-selected="false" data-i18n="quran.tab_fav"></button></div>
     </header>
     <div class="pad" id="quranList"></div>
   </section>
@@ -111,7 +113,7 @@
       <button class="round" id="rOpts" data-i18n-aria="reader.options"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
     </header>
     <div class="ropts" id="ropts" hidden>
-      <div class="seg small"><button data-mode="verse" aria-selected="true" data-i18n="reader.verse_by_verse"></button><button data-mode="mushaf" aria-selected="false" data-i18n="reader.mushaf"></button></div>
+      <div class="seg small"><button data-mode="verse" aria-selected="true" data-i18n="reader.verse_by_verse"></button><button data-mode="mushaf" aria-selected="false" data-i18n="reader.mushaf"></button><button data-mode="pages" aria-selected="false" data-i18n="reader.pages"></button></div>
       <label class="tog"><input type="checkbox" id="oTr" checked> <span data-i18n="reader.translation"></span></label>
       <label class="tog"><input type="checkbox" id="oTaj"> <span data-i18n="reader.tajweed"></span></label>
       <label class="tog"><input type="checkbox" id="oHifz"> <span data-i18n="reader.hifz"></span></label>
@@ -131,6 +133,9 @@
       <button class="card learn-card discover-l" data-go="discover"><span class="lc-ic">✦</span><span><b data-i18n="disc.card_t"></b><span data-i18n="disc.card_d"></span></span></button>
       <button class="card learn-card dark" data-go="tafsir"><span class="girih"></span><span class="lc-ic" lang="ar">تفسير</span><span><b data-i18n="learn.tafsir_t"></b><span data-i18n="learn.tafsir_d"></span></span></button>
       <button class="card learn-card recite-card" data-go="recite"><span class="lc-ic rc-ic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span><b data-i18n="recite.title"></b><span data-i18n="recite.card"></span></span></button>
+      <button class="card learn-card" data-go="khatm"><span class="lc-ic" lang="ar">ختمة</span><span><b data-i18n="khatm.title"></b><span data-i18n="khatm.card"></span></span></button>
+      <button class="card learn-card" data-go="revise"><span class="lc-ic" lang="ar">مراجعة</span><span><b data-i18n="rev.title"></b><span data-i18n="rev.card"></span></span></button>
+      <button class="card learn-card" data-go="vocab"><span class="lc-ic" lang="ar">جذور</span><span><b data-i18n="vocab.title"></b><span data-i18n="vocab.card"></span></span></button>
       <button class="card learn-card" data-go="tajweed"><span class="lc-ic" lang="ar">تجويد</span><span><b data-i18n="learn.tajweed_t"></b><span data-i18n="learn.tajweed_d"></span></span></button>
       <button class="card learn-card kids" data-go="kids"><span class="lc-ic" lang="ar">أ ب ت</span><span><b data-i18n="learn.kids_t"></b><span data-i18n="learn.kids_d"></span></span></button>
       <button class="card learn-card" data-go="more" data-sub="progress"><span class="lc-ic" lang="ar">حفظ</span><span><b data-i18n="learn.hifz_t"></b><span data-i18n="learn.hifz_d"></span></span></button>
@@ -165,6 +170,46 @@
       <span style="width:42px"></span>
     </header>
     <div class="pad stack" id="discoverBody"></div>
+  </section>
+
+  <!-- MUSHAF PAR PAGES -->
+  <section class="view" id="v-page" hidden>
+    <header class="rhead">
+      <button class="round back" data-back="quran" data-i18n-aria="common.back"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="rtitle"><b id="pgTitle"></b><small id="pgTop"></small></div>
+      <span style="width:42px"></span>
+    </header>
+    <div class="pg-wrap">
+      <div class="mframe"><div class="pg-head"><span id="pgSurah"></span></div><div id="mpage" class="mpage" lang="ar" dir="rtl"></div><div class="pg-foot" id="pgNum"></div></div>
+      <div class="pg-nav"><button class="pill" id="pgNext" data-i18n="page.next"></button><label class="pg-go"><span data-i18n="page.go"></span><input id="pgInput" type="number" min="1" max="604" inputmode="numeric"></label><button class="pill" id="pgPrev" data-i18n="page.prev"></button></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-khatm" hidden>
+    <header class="rhead">
+      <button class="round back" data-back="learn" data-i18n-aria="common.back"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="rtitle"><b data-i18n="khatm.title"></b><small data-i18n="khatm.sub"></small></div>
+      <span style="width:42px"></span>
+    </header>
+    <div class="pad stack" id="khatmBody"></div>
+  </section>
+
+  <section class="view" id="v-revise" hidden>
+    <header class="rhead">
+      <button class="round back" data-back="learn" data-i18n-aria="common.back"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="rtitle"><b data-i18n="rev.title"></b><small data-i18n="rev.sub"></small></div>
+      <span style="width:42px"></span>
+    </header>
+    <div class="pad stack" id="reviseBody"></div>
+  </section>
+
+  <section class="view" id="v-vocab" hidden>
+    <header class="rhead">
+      <button class="round back" data-back="learn" data-i18n-aria="common.back"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="rtitle"><b data-i18n="vocab.title"></b><small data-i18n="vocab.sub"></small></div>
+      <span style="width:42px"></span>
+    </header>
+    <div class="pad stack" id="vocabBody"></div>
   </section>
 
   <!-- RÉCITER ET CORRIGER -->
@@ -269,6 +314,8 @@
           <label class="field"><span data-i18n="set.theme"></span><select id="themeSel"><option value="auto" data-i18n="set.auto"></option><option value="light" data-i18n="set.light"></option><option value="dark" data-i18n="set.dark"></option></select></label>
           <label class="field"><span data-i18n="set.ai_server"></span><input id="aiUrl" placeholder="https://…" inputmode="url" dir="ltr"></label>
         </div>
+        <div class="card" id="offlineBox"></div>
+        <div class="card" id="backupBox"></div>
         <div class="card">
           <div class="eyebrow" data-i18n="set.source"></div>
           <div class="srcbox" id="srcInfo"></div>
@@ -322,5 +369,11 @@
 <script src="learn.js"></script>
 <script src="recite.js"></script>
 <script src="discover.js"></script>
+<script src="pages.js"></script>
+<script src="khatm.js"></script>
+<script src="revise.js"></script>
+<script src="favorites.js"></script>
+<script src="roots.js"></script>
+<script src="offline.js"></script>
 </body>
 </html>

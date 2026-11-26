@@ -63,7 +63,7 @@ Tout ce qui pouvait être préparé l'est déjà. Il reste les étapes qui deman
 
 ## Étape 5 — L'assistant IA (facultatif)
 
-1. Déployez `server/` sur un hébergeur Node (Render, Railway, Fly.io…) avec la variable `ANTHROPIC_API_KEY`.
+1. Créez une clé API sur console.anthropic.com, puis un compte gratuit sur render.com › **New › Blueprint** › choisissez le dépôt `noor` : le fichier `render.yaml` crée le serveur. Collez la clé quand elle est demandée.
 2. Mettez son adresse dans `www/config.js` (`aiUrl`).
 3. Mettez à jour les questionnaires de confidentialité (lignes **[IA]** de `store/FORMULAIRES.md`).
 

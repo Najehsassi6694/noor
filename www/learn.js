@@ -61,8 +61,8 @@ async function loadTafsir() {
   try {
     let data = tfCache.get(key);
     if (!data) {
-      const r = await fetch(`https://api.quran.com/api/v4/tafsirs/${src[0]}/by_ayah/${s}:${a}`);
-      if (!r.ok) throw 0; data = (await r.json()).tafsir; tfCache.set(key, data);
+      const url = `https://api.quran.com/api/v4/tafsirs/${src[0]}/by_ayah/${s}:${a}`;
+      data = (window.Offline ? await window.Offline.cachedJSON(url) : await fetch(url).then(r => { if (!r.ok) throw 0; return r.json() })).tafsir; tfCache.set(key, data);
     }
     if (my !== tfReq) return;
     const keys = Object.keys(data.verses || {}), clean = cleanHTML(data.text || "");
@@ -70,6 +70,9 @@ async function loadTafsir() {
     if (keys.length > 1) body.insertAdjacentHTML("beforeend", `<p class="tf-group" dir="auto">${t("tafsir.group", { r: `${keys[0]} – ${keys[keys.length - 1]}` })}</p>`);
     body.appendChild(clean);
     body.insertAdjacentHTML("beforeend", `<p class="src tf-src" dir="auto">◆ ${esc(t("tafsir.src", { n: src[1] === "ar" ? src[2] : src[3] }))}</p>`);
+    const tdl = store.get("tafdl", {})[`${src[0]}|${s}`];
+    if (window.Offline) body.insertAdjacentHTML("beforeend", `<button class="pill" id="tfDl" ${tdl ? "disabled" : ""}>${t(tdl ? "off.taf_ready" : "off.taf_download")}</button>`);
+    $("#tfDl")?.addEventListener("click", async ev => { const b = ev.currentTarget; b.disabled = true; b.textContent = "…"; try { await window.Offline.downloadTafsir(src[0], s); b.textContent = t("off.taf_ready"); toast(t("off.done")) } catch { b.disabled = false; b.textContent = t("off.taf_download"); toast(t("off.error")) } });
     if (LANG === "fr") body.insertAdjacentHTML("beforeend", `<p class="small muted" dir="auto">${t("tafsir.no_fr")}</p>`);
     if (LANG !== src[1]) body.insertAdjacentHTML("beforeend", `<button class="pill ai needs-ai" id="tfSum">${t("tafsir.ai_sum")}</button>`);
     $("#tfSum")?.addEventListener("click", () => summarizeTafsir(clean.textContent, src, s, a));

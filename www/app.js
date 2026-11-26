@@ -117,6 +117,7 @@ function setLang(l, rerender = true) {
   const v = location.hash.slice(1) || "home"; route(v, false);
   if (v === "reader") renderSurah(cur);
   window.Learn?.refresh(); window.Recite?.refresh(); window.Discover?.refresh();
+  window.Pages?.refresh(); window.Khatm?.homeCard(); if (v === "khatm") window.Khatm?.render(); window.Revise?.refresh(); window.Vocab?.refresh();
 }
 applyTheme(); setLang(S.settings.lang, false); mountThemeToggles();
 
@@ -133,6 +134,7 @@ applyTheme(); setLang(S.settings.lang, false); mountThemeToggles();
   initHomeStatic(); renderQuranList();   // redessine ce qui dépend du texte vérifié (verset du jour, listes)
   if (S.settings.taj) await loadTajweed();
   window.Learn?.init(); window.Recite?.init(); window.Discover?.init(); updateAiState();
+  window.Pages?.init(); window.Khatm?.init(); window.Revise?.init(); window.Vocab?.init(); window.Khatm?.homeCard();
   route(location.hash.slice(1) || "home", false);
   if (!store.get("onboarded", false)) {
     $("#onboard").hidden = false;
@@ -213,8 +215,8 @@ function wordsHTML(s, a, taj, only) {
 }
 
 /* ================= Navigation ================= */
-const VIEWS = ["home", "quran", "reader", "learn", "discover", "tafsir", "tajweed", "kids", "recite", "ai", "more"];
-const TAB_OF = { reader: "quran", tafsir: "learn", tajweed: "learn", kids: "learn", recite: "learn", discover: "learn" };
+const VIEWS = ["home", "quran", "reader", "page", "learn", "discover", "khatm", "revise", "vocab", "tafsir", "tajweed", "kids", "recite", "ai", "more"];
+const TAB_OF = { reader: "quran", page: "quran", tafsir: "learn", tajweed: "learn", kids: "learn", recite: "learn", discover: "learn", khatm: "learn", revise: "learn", vocab: "learn" };
 function initNav() {
   document.addEventListener("click", e => {
     const b = e.target.closest("[data-go]"); if (b) { route(b.dataset.go); if (b.dataset.tab) setQuranTab(b.dataset.tab); if (b.dataset.sub) setMoreTab(b.dataset.sub); return }
@@ -233,6 +235,10 @@ function route(v, push = true) {
   if (v === "more") renderMoreTab();
   if (["tafsir", "tajweed", "kids"].includes(v)) window.Learn?.show(v);
   if (v === "recite") window.Recite?.show(); else window.Recite?.leave();
+  if (v === "khatm") window.Khatm?.render();
+  if (v === "revise") window.Revise?.show();
+  if (v === "vocab") window.Vocab?.show();
+  if (v === "page" && Q && !$("#mpage").children.length) window.Pages?.open();
   if (v === "reader" && Q && !$("#reader").children.length) renderSurah(S.last.s, S.last.a);
   if (v === "discover") window.Discover?.show();
   if (v !== "reader") scrollTo(0, 0);
@@ -282,6 +288,7 @@ function renderHome() {
   $("#ringKhatm").style.setProperty("--v", pc); $("#ringKhatmTxt").textContent = num(pc * 100 >= 1 ? Math.round(pc * 100) : pc * 100 >= 0.1 ? (pc * 100).toFixed(1) : 0) + "%";
   $("#khatmSmall").textContent = t("home.khatm_sub", { n: num(read) });
   renderPrayerCard();
+  window.Khatm?.homeCard();
 }
 
 /* ================= Liste du Coran ================= */
@@ -291,7 +298,7 @@ const normAr = x => x.replace(/[ؐ-ًؚ-ٰٟۖ-ۭـ]/g, "").replace(/[ٱأإآ]/
 function initQuran() {
   $$("#v-quran .seg button").forEach(b => b.onclick = () => setQuranTab(b.dataset.t));
   let tm; $("#qSearch").oninput = () => { clearTimeout(tm); tm = setTimeout(renderQuranList, 180) };
-  $("#quranList").onclick = e => { const b = e.target.closest("[data-s]"); if (b) openSurah(+b.dataset.s, +(b.dataset.a || 0)) };
+  $("#quranList").onclick = e => { if (window.Fav?.onClick(e, renderQuranList)) return; const pg = e.target.closest("[data-page]"); if (pg) { window.Pages.open(+pg.dataset.page); return } const b = e.target.closest("[data-s]"); if (b) openSurah(+b.dataset.s, +(b.dataset.a || 0)) };
   renderQuranList();
 }
 function setQuranTab(x) { quranTab = x; $$("#v-quran .seg button").forEach(b => b.setAttribute("aria-selected", b.dataset.t === x)); renderQuranList() }
@@ -322,7 +329,19 @@ function renderQuranList() {
   }
   if (quranTab === "surahs") box.innerHTML = Q.s.map(surahRow).join("");
   else if (quranTab === "juz") box.innerHTML = JUZ.map(([s, a], i) => `<button class="sitem" data-s="${s}" data-a="${a}"><span class="snum"><i>${num(i + 1)}</i></span><span class="sname"><b>${t("quran.juz", { n: num(i + 1) })}</b><small>${t("quran.juz_start", { s: esc(sName(s)), r: `${s}:${a}` })}</small></span><span class="sar">الجزء ${arNum(i + 1)}</span></button>`).join("");
+  else if (quranTab === "pages") renderPagesTab(box);
+  else if (window.Fav) box.innerHTML = window.Fav.listHTML();
   else box.innerHTML = S.bookmarks.length ? S.bookmarks.map(k => { const [s, a] = pr(k); return valid(s, a) ? miniVerse(s, a) : "" }).join("") : `<p class="muted center" style="margin-top:30px">${t("quran.no_fav")}</p>`;
+}
+async function renderPagesTab(box) {
+  box.innerHTML = `<p class="muted">…</p>`;
+  if (!(await window.Pages.load())) { box.innerHTML = `<div class="blocked">${t("tafsir.offline")}</div>`; return }
+  const juzPages = JUZ.map(([s, a]) => window.Pages.pageOf(s, a));
+  const lastPage = store.get("page", 1);
+  box.innerHTML = `<div class="card pg-tab"><p class="muted small">${t("page.intro")}</p>
+    <div class="row-btns"><button class="pill gold" data-page="${lastPage}">${t("page.resume", { n: num(lastPage) })}</button><button class="pill" data-page="1">${t("page.page", { n: num(1) })}</button></div></div>
+    <div class="list-label">${t("quran.tab_juz")}</div>
+    <div class="pg-grid">${juzPages.map((p, i) => `<button class="pg-cell" data-page="${p}"><b>${t("quran.juz", { n: num(i + 1) })}</b><span>${t("page.page", { n: num(p) })}</span></button>`).join("")}</div>`;
 }
 function isSurahRead(n) { const s = Q.s[n - 1]; for (let a = 1; a <= s.c; a++) { const g = gid(n, a); if (!(readBits[g >> 3] & (1 << (g & 7)))) return false } return true }
 
@@ -332,7 +351,7 @@ function initReader() {
   $("#rBack").onclick = () => history.length > 1 ? history.back() : route("quran");
   $("#rOpts").onclick = () => $("#ropts").hidden = !$("#ropts").hidden;
   $("#oSize").value = S.settings.size; $("#oTaj").checked = S.settings.taj;
-  $$("#ropts .seg button").forEach(b => { b.setAttribute("aria-selected", b.dataset.mode === S.settings.mode); b.onclick = () => { S.settings.mode = b.dataset.mode; saveSettings(); $$("#ropts .seg button").forEach(x => x.setAttribute("aria-selected", x === b)); renderSurah(cur) } });
+  $$("#ropts .seg button").forEach(b => { b.setAttribute("aria-selected", b.dataset.mode === S.settings.mode); b.onclick = async () => { if (b.dataset.mode === "pages") { $("#ropts").hidden = true; await window.Pages.load(); window.Pages.open(window.Pages.pageOf(cur, S.last.s === cur ? S.last.a : 1)); return } S.settings.mode = b.dataset.mode; saveSettings(); $$("#ropts .seg button").forEach(x => x.setAttribute("aria-selected", x === b)); renderSurah(cur) } });
   $("#oTr").onchange = e => { $("#reader").classList.toggle("hide-tr", !e.target.checked) };
   $("#oTaj").onchange = async e => { S.settings.taj = e.target.checked; saveSettings(); if (S.settings.taj) await loadTajweed(); const y = scrollY; renderSurah(cur); scrollTo(0, y) };
   $("#oHifz").onchange = e => { $("#reader").classList.toggle("hifz", e.target.checked); $$("#reader .w").forEach(w => w.classList.remove("shown")) };
@@ -365,7 +384,7 @@ function renderSurah(n, focusA = 0) {
   R.classList.toggle("taj-on", taj);
   observer.disconnect(); observer.reset?.();
   if (!okS(n)) { R.innerHTML = `<div class="blocked" style="margin-top:20px">${t("reader.blocked")}</div>`; return }
-  let h = `<div class="s-banner"><span class="girih"></span><div class="arn" lang="ar">سُورَةُ ${esc(s.ar)}</div><h2>${esc(LANG === "ar" ? s.tr : s.tr + " — " + sMeaning(n))}</h2><p>${t("quran.n_verses", { n: num(s.c) })} · ${t(s.p === "makkah" ? "reader.mecca" : "reader.medina")}</p><div class="row-btns center"><button class="pill gold" data-play-surah>${t("reader.listen_surah")}</button></div></div><div id="sAi" class="ai-slot"></div>`;
+  let h = `<div class="s-banner"><span class="girih"></span><div class="arn" lang="ar">سُورَةُ ${esc(s.ar)}</div><h2>${esc(LANG === "ar" ? s.tr : s.tr + " — " + sMeaning(n))}</h2><p>${t("quran.n_verses", { n: num(s.c) })} · ${t(s.p === "makkah" ? "reader.mecca" : "reader.medina")}</p><div class="row-btns center"><button class="pill gold" data-play-surah>${t("reader.listen_surah")}</button>${window.Offline ? window.Offline.bannerButton(n) : ""}</div></div><div id="sAi" class="ai-slot"></div>`;
   if (n !== 1 && n !== 9) h += `<div class="basmala" lang="ar">${taj ? wordsHTML(1, 1, true) : esc(Q.a[0][0])}</div>`;
   if (S.settings.mode === "mushaf") {
     h += `<div class="mushaf" lang="ar">` + Q.a[n - 1].map((_, i) => `<span class="mv" id="v${n}-${i + 1}" data-v="${n}:${i + 1}" data-s="${n}" data-a="${i + 1}">${wordsHTML(n, i + 1, taj)}<span class="end">﴿${arNum(i + 1)}﴾</span></span> `).join("") + `</div>`;
@@ -403,6 +422,7 @@ let sheetRef = null;
 function initSheet() {
   $("#sheetBg").onclick = closeSheet;
   $("#sheet").onclick = e => {
+    if (window.Fav?.onClick(e)) return;
     const b = e.target.closest("[data-sa]"); if (!b || !sheetRef) return;
     const [s, a] = sheetRef, k = s + ":" + a;
     switch (b.dataset.sa) {
@@ -410,7 +430,7 @@ function initSheet() {
       case "repeat": closeSheet(); Player.start(s, a, { single: true, repeat: Math.max(3, +S.settings.repeat) }); toast(t("toast.repeat")); break;
       case "tafsir": closeSheet(); window.Learn?.openTafsir(s, a); break;
       case "recite": closeSheet(); window.Recite?.open(s, a); break;
-      case "bm": S.bookmarks = S.bookmarks.includes(k) ? S.bookmarks.filter(x => x !== k) : [...S.bookmarks, k]; store.set("bm", S.bookmarks); updateSheetIcons(); refreshVerseMarks(s); toast(t(S.bookmarks.includes(k) ? "toast.fav_add" : "toast.fav_del")); break;
+      case "bm": if (window.Fav) window.Fav.toggle(s, a, $("#shAi")); else { S.bookmarks = S.bookmarks.includes(k) ? S.bookmarks.filter(x => x !== k) : [...S.bookmarks, k]; store.set("bm", S.bookmarks) } updateSheetIcons(); refreshVerseMarks(s); break;
       case "memo": if (S.memo[k]) delete S.memo[k]; else S.memo[k] = Date.now(); store.set("memo", S.memo); updateSheetIcons(); refreshVerseMarks(s); break;
       case "copy": copyText(verseText(s, a)); break;
       case "share": shareVerse(s, a); break;
@@ -439,9 +459,12 @@ const recName = r => (RECITERS.find(x => x[0] === r) || [, "NOOR"])[1];
 const Player = {
   el: new Audio(), s: 0, a: 0, rep: 1, left: 1, single: false, on: false, rec: null, onEnd: null, onVerse: null,
   start(s, a, o = {}) { this.s = s; this.a = a; this.single = !!o.single; this.rep = o.repeat || +S.settings.repeat; this.left = this.rep; this.rec = o.reciter || null; this.onEnd = o.onEnd || null; this.onVerse = o.onVerse || null; this.play() },
-  play() {
+  async play() {
     if (!okS(this.s)) return;
-    this.el.src = audioUrl(this.s, this.a, this.rec); this.on = true;
+    const url = audioUrl(this.s, this.a, this.rec), my = (this.seq = (this.seq || 0) + 1);
+    const src = window.Offline ? await window.Offline.src(url) : url;
+    if (my !== this.seq) return;
+    this.el.src = src; this.on = true;
     this.el.play().catch(() => { toast(t("toast.audio")); this.setUI() });
     this.setUI(); this.highlight(); this.media(); this.onVerse?.(this.s, this.a);
   },
@@ -463,7 +486,8 @@ const Player = {
   highlight() {
     $$(".playing").forEach(e => e.classList.remove("playing"));
     if (!this.on) return;
-    const el = $(`#v${this.s}-${this.a}`) || $(`#kv${this.s}-${this.a}`);
+    const pk = $$(`#mpage .pk[data-k="${this.s}:${this.a}"]`); pk.forEach(x => x.classList.add("playing"));
+    const el = $(`#v${this.s}-${this.a}`) || $(`#kv${this.s}-${this.a}`) || pk[0];
     if (el && !el.closest("[hidden]")) { el.classList.add("playing"); el.scrollIntoView({ block: "center", behavior: "smooth" }) }
   },
   media() {
@@ -600,7 +624,7 @@ function renderPrayer() {
 }
 let moreTab = "prayer";
 function setMoreTab(x) { moreTab = x; $$("#v-more .seg button").forEach(b => b.setAttribute("aria-selected", b.dataset.m === x)); $$("#v-more .sub").forEach(el => el.hidden = el.id !== "m-" + x); renderMoreTab() }
-function renderMoreTab() { if (moreTab === "prayer") renderPrayer(); if (moreTab === "qibla") renderQibla(); if (moreTab === "progress") renderProgress(); if (moreTab === "tasbih") window.renderTasbih?.() }
+function renderMoreTab() { if (moreTab === "settings") window.Offline?.renderSettings(); if (moreTab === "prayer") renderPrayer(); if (moreTab === "qibla") renderQibla(); if (moreTab === "progress") renderProgress(); if (moreTab === "tasbih") window.renderTasbih?.() }
 function fillSelects() {
   const city = $("#citySel");
   city.innerHTML = (S.settings.lat != null ? `<option value="gps">📍 ${esc(t("prayer.my_pos"))} (${S.settings.lat}, ${S.settings.lng})</option>` : "") + Object.entries(CITIES).map(([k, v]) => `<option value="${k}">${esc(cityName(v))}</option>`).join("");

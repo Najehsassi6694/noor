@@ -1,0 +1,16 @@
+# Déploiement en un clic du serveur IA de NOOR sur Render (render.com).
+# Render › New › Blueprint › choisissez ce dépôt ; collez votre clé ANTHROPIC_API_KEY quand elle est demandée.
+services:
+  - type: web
+    name: noor-ai
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: NODE_VERSION
+        value: "22"
