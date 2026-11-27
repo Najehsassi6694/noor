@@ -3,6 +3,17 @@
 "use strict";
 const I18N = {
 fr: {
+  "names.title": "Les 99 noms d'Allah",
+  "names.sub": "Al-Asmāʾ al-Ḥusnā",
+  "names.card": "Les plus beaux noms d'Allah : sens, écoute, mémorisation et versets du Coran.",
+  "names.intro": "« À Allah appartiennent les plus beaux noms : invoquez-Le par eux » (Coran 7:180). Touchez un nom pour voir son sens et un verset où il apparaît.",
+  "names.source": "Liste rapportée par at-Tirmidhī (n° 3507). Les savants divergent sur l'énumération exacte ; les traductions des sens sont approximatives. Les versets proviennent du texte vérifié.",
+  "names.listen": "Écouter",
+  "names.in_quran": "Dans le Coran",
+  "names.no_verse": "Ce nom vient de la Sunna ; il n'apparaît pas sous cette forme exacte dans le Coran.",
+  "names.all": "Tous les noms",
+  "names.of_day": "Nom du jour",
+  "names.known": "{n} mémorisés",
   "set.license_t": "Logiciel libre :",
   "set.license": "NOOR est publié sous licence GNU GPL v3. Code source :",
   "quran.tab_pages": "Pages",
@@ -200,6 +211,17 @@ fr: {
   "lesson.silent.t": "Lettres non prononcées", "lesson.silent.b": "<b>Hamzat al-waṣl</b> (ٱ) ne se prononce pas quand on enchaîne avec le mot précédent. Le <b>lām</b> de l'article est assimilé devant les quatorze lettres « solaires ». Certaines lettres écrites dans le Mushaf ne se prononcent pas."
 },
 en: {
+  "names.title": "The 99 Names of Allah",
+  "names.sub": "Al-Asmāʾ al-Ḥusnā",
+  "names.card": "The most beautiful names of Allah: meaning, audio, memorisation and Quran verses.",
+  "names.intro": "“To Allah belong the most beautiful names, so call upon Him by them” (Quran 7:180). Tap a name to see its meaning and a verse where it appears.",
+  "names.source": "List reported by at-Tirmidhī (no. 3507). Scholars differ on the exact enumeration; translations of meanings are approximate. Verses come from the verified text.",
+  "names.listen": "Listen",
+  "names.in_quran": "In the Quran",
+  "names.no_verse": "This name comes from the Sunnah; it does not appear in this exact form in the Quran.",
+  "names.all": "All names",
+  "names.of_day": "Name of the day",
+  "names.known": "{n} memorised",
   "set.license_t": "Free software:",
   "set.license": "NOOR is released under the GNU GPL v3 licence. Source code:",
   "quran.tab_pages": "Pages",
@@ -397,6 +419,17 @@ en: {
   "lesson.silent.t": "Letters not pronounced", "lesson.silent.b": "<b>Hamzat al-wasl</b> (ٱ) is not pronounced when joining from the previous word. The <b>lam</b> of the article merges into the fourteen “sun” letters. Some letters written in the Mushaf are not pronounced."
 },
 ar: {
+  "names.title": "أسماء الله الحسنى",
+  "names.sub": "تسعة وتسعون اسمًا",
+  "names.card": "أسماء الله الحسنى: المعنى والاستماع والحفظ والآيات.",
+  "names.intro": "﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا﴾ (الأعراف ١٨٠). اضغط على اسم لترى معناه وآية ورد فيها.",
+  "names.source": "القائمة من رواية الترمذي (٣٥٠٧)، وفي تعيينها خلاف بين العلماء، والمعاني تقريبية. الآيات من النص الموثّق.",
+  "names.listen": "استمع",
+  "names.in_quran": "في القرآن",
+  "names.no_verse": "هذا الاسم ورد في السنة، ولم يرد بهذه الصيغة في القرآن.",
+  "names.all": "كل الأسماء",
+  "names.of_day": "اسم اليوم",
+  "names.known": "حُفظ {n}",
   "set.license_t": "برنامج حر:",
   "set.license": "يُنشر «نور» بترخيص GNU GPL الإصدار الثالث. الشيفرة المصدرية:",
   "quran.tab_pages": "الصفحات",

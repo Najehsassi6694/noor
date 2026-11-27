@@ -117,7 +117,7 @@ function setLang(l, rerender = true) {
   const v = location.hash.slice(1) || "home"; route(v, false);
   if (v === "reader") renderSurah(cur);
   window.Learn?.refresh(); window.Recite?.refresh(); window.Discover?.refresh();
-  window.Pages?.refresh(); window.Khatm?.homeCard(); if (v === "khatm") window.Khatm?.render(); window.Revise?.refresh(); window.Vocab?.refresh();
+  window.Pages?.refresh(); window.Khatm?.homeCard(); if (v === "khatm") window.Khatm?.render(); window.Revise?.refresh(); window.Vocab?.refresh(); window.Names?.refresh();
 }
 applyTheme(); setLang(S.settings.lang, false); mountThemeToggles();
 
@@ -134,7 +134,7 @@ applyTheme(); setLang(S.settings.lang, false); mountThemeToggles();
   initHomeStatic(); renderQuranList();   // redessine ce qui dépend du texte vérifié (verset du jour, listes)
   if (S.settings.taj) await loadTajweed();
   window.Learn?.init(); window.Recite?.init(); window.Discover?.init(); updateAiState();
-  window.Pages?.init(); window.Khatm?.init(); window.Revise?.init(); window.Vocab?.init(); window.Khatm?.homeCard();
+  window.Pages?.init(); window.Khatm?.init(); window.Revise?.init(); window.Vocab?.init(); window.Names?.init(); window.Khatm?.homeCard(); window.Names?.homeCard();
   route(location.hash.slice(1) || "home", false);
   if (!store.get("onboarded", false)) {
     $("#onboard").hidden = false;
@@ -215,8 +215,8 @@ function wordsHTML(s, a, taj, only) {
 }
 
 /* ================= Navigation ================= */
-const VIEWS = ["home", "quran", "reader", "page", "learn", "discover", "khatm", "revise", "vocab", "tafsir", "tajweed", "kids", "recite", "ai", "more"];
-const TAB_OF = { reader: "quran", page: "quran", tafsir: "learn", tajweed: "learn", kids: "learn", recite: "learn", discover: "learn", khatm: "learn", revise: "learn", vocab: "learn" };
+const VIEWS = ["home", "quran", "reader", "page", "learn", "discover", "khatm", "revise", "vocab", "names", "tafsir", "tajweed", "kids", "recite", "ai", "more"];
+const TAB_OF = { reader: "quran", page: "quran", tafsir: "learn", tajweed: "learn", kids: "learn", recite: "learn", discover: "learn", khatm: "learn", revise: "learn", vocab: "learn", names: "learn" };
 function initNav() {
   document.addEventListener("click", e => {
     const b = e.target.closest("[data-go]"); if (b) { route(b.dataset.go); if (b.dataset.tab) setQuranTab(b.dataset.tab); if (b.dataset.sub) setMoreTab(b.dataset.sub); return }
@@ -238,6 +238,7 @@ function route(v, push = true) {
   if (v === "khatm") window.Khatm?.render();
   if (v === "revise") window.Revise?.show();
   if (v === "vocab") window.Vocab?.show();
+  if (v === "names") window.Names?.show();
   if (v === "page" && Q && !$("#mpage").children.length) window.Pages?.open();
   if (v === "reader" && Q && !$("#reader").children.length) renderSurah(S.last.s, S.last.a);
   if (v === "discover") window.Discover?.show();
@@ -288,7 +289,7 @@ function renderHome() {
   $("#ringKhatm").style.setProperty("--v", pc); $("#ringKhatmTxt").textContent = num(pc * 100 >= 1 ? Math.round(pc * 100) : pc * 100 >= 0.1 ? (pc * 100).toFixed(1) : 0) + "%";
   $("#khatmSmall").textContent = t("home.khatm_sub", { n: num(read) });
   renderPrayerCard();
-  window.Khatm?.homeCard();
+  window.Khatm?.homeCard(); window.Names?.homeCard();
 }
 
 /* ================= Liste du Coran ================= */

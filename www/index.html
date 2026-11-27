@@ -62,6 +62,7 @@
       </button>
       <button class="card discover-card" data-go="discover"><span class="girih"></span><span class="dc-ic" aria-hidden="true">✦</span><span><b data-i18n="disc.card_t"></b><span data-i18n="disc.card_d"></span></span><span class="dc-go flip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span></button>
       <button class="card khatm-card" id="khatmCard" hidden></button>
+      <button class="card name-day" id="nameCard" hidden></button>
       <div class="rings">
         <div class="card ring-card"><div class="ring" id="ringWird"><span id="ringWirdTxt">0</span></div><div><b data-i18n="home.wird"></b><span id="goalTxt"></span></div></div>
         <div class="card ring-card"><div class="ring" id="ringKhatm"><span id="ringKhatmTxt">0%</span></div><div><b data-i18n="home.khatm"></b><span id="khatmSmall"></span></div></div>
@@ -133,6 +134,7 @@
       <button class="card learn-card discover-l" data-go="discover"><span class="lc-ic">✦</span><span><b data-i18n="disc.card_t"></b><span data-i18n="disc.card_d"></span></span></button>
       <button class="card learn-card dark" data-go="tafsir"><span class="girih"></span><span class="lc-ic" lang="ar">تفسير</span><span><b data-i18n="learn.tafsir_t"></b><span data-i18n="learn.tafsir_d"></span></span></button>
       <button class="card learn-card recite-card" data-go="recite"><span class="lc-ic rc-ic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span><b data-i18n="recite.title"></b><span data-i18n="recite.card"></span></span></button>
+      <button class="card learn-card names-l" data-go="names"><span class="lc-ic" lang="ar">الأسماء</span><span><b data-i18n="names.title"></b><span data-i18n="names.card"></span></span></button>
       <button class="card learn-card" data-go="khatm"><span class="lc-ic" lang="ar">ختمة</span><span><b data-i18n="khatm.title"></b><span data-i18n="khatm.card"></span></span></button>
       <button class="card learn-card" data-go="revise"><span class="lc-ic" lang="ar">مراجعة</span><span><b data-i18n="rev.title"></b><span data-i18n="rev.card"></span></span></button>
       <button class="card learn-card" data-go="vocab"><span class="lc-ic" lang="ar">جذور</span><span><b data-i18n="vocab.title"></b><span data-i18n="vocab.card"></span></span></button>
@@ -201,6 +203,15 @@
       <span style="width:42px"></span>
     </header>
     <div class="pad stack" id="reviseBody"></div>
+  </section>
+
+  <section class="view" id="v-names" hidden>
+    <header class="rhead">
+      <button class="round back" data-back="learn" data-i18n-aria="common.back"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="rtitle"><b data-i18n="names.title"></b><small data-i18n="names.sub"></small></div>
+      <span style="width:42px"></span>
+    </header>
+    <div class="pad stack" id="namesBody"></div>
   </section>
 
   <section class="view" id="v-vocab" hidden>
@@ -374,6 +385,7 @@
 <script src="revise.js"></script>
 <script src="favorites.js"></script>
 <script src="roots.js"></script>
+<script src="names.js"></script>
 <script src="offline.js"></script>
 </body>
 </html>

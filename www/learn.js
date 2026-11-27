@@ -200,6 +200,7 @@ function initKids() {
 /* ---------- Branchement ---------- */
 let ready = false;
 window.Learn = {
+  speak: speakAr,
   init() { initTafsir(); initKids(); ready = true },
   show(v) { if (!ready) return; if (v === "tafsir") loadTafsir(); if (v === "tajweed") renderTajweed(); if (v === "kids") renderKids() },
   openTafsir,

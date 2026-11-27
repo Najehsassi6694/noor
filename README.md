@@ -24,6 +24,7 @@ Une seule base de code (Capacitor) qui produit l'app Android, l'app iOS et une v
 - **Plan de khatm** : finir le Coran en 7 à 90 jours, avec les pages du jour, le retard éventuel et une carte sur l’accueil.
 - **Révision** : questions « verset suivant » et « fin du verset », répétition espacée (boîtes de Leitner).
 - **Vocabulaire** : les 100 racines les plus fréquentes (sur 1 651), leur sens en 3 langues, leurs lemmes et des exemples surlignés dans les versets, avec des fiches de révision. Données : Quranic Arabic Corpus (licence GNU GPL, `scripts/build-roots.mjs`).
+- **Les 99 noms d'Allah** (al-Asmāʾ al-Ḥusnā) : nom du jour sur l'accueil, sens en FR/EN/AR, écoute, fiches de mémorisation, et pour 85 noms un verset où il apparaît (vérifié par `scripts/build-names.mjs`). Liste rapportée par at-Tirmidhī ; son énumération exacte est discutée par les savants.
 - **Favoris classés** (réflexion, à mémoriser, invocation, autre) avec notes personnelles.
 - **Hors ligne** : télécharger la récitation d’une sourate ; tout tafsir consulté reste disponible sans connexion, ou se télécharge pour une sourate entière.
 - **Sauvegarde et transfert** : un code à copier pour retrouver sa progression sur un autre téléphone.
